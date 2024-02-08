@@ -2,7 +2,7 @@ version: "3"
 
 services:
   backend:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     labels:
       - "traefik.enable=true"
     deploy:
@@ -14,7 +14,7 @@ services:
 
 
   configurator:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     deploy:
       restart_policy:
         condition: none
@@ -37,7 +37,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   create-site:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     depends_on:
       db:
         condition: service_healthy
@@ -72,7 +72,7 @@ services:
           fi;
         done &&
         echo "sites/common_site_config.json found" &&
-        bench new-site --no-mariadb-socket --admin-password ${ADMIN_PASS} --db-root-password ${DB_ROOT_PASS} --install-app erpnext --set-default ${SITE_NAME};
+        bench new-site --no-mariadb-socket --admin-password ${ADMIN_PASS} --db-root-password ${DB_ROOT_PASS} --install-app payment erpnext hospitality hrms non_profit india_compliance grillax_restaurant ury_offline --set-default ${SITE_NAME};
 
   db:
     image: mariadb:10.6
@@ -118,7 +118,7 @@ services:
 
 
   frontend:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     labels:
       - traefik.enable=true
       - traefik.http.services.frontend.loadbalancer.server.port=8080
@@ -146,7 +146,7 @@ services:
     ports:
       - "8080:8080"
   queue-long:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     labels:
       - "traefik.enable=false"
     deploy:
@@ -163,7 +163,7 @@ services:
 
 
   queue-short:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     labels:
       - "traefik.enable=false"
     deploy:
@@ -202,7 +202,7 @@ services:
 
 
   scheduler:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     labels:
       - "traefik.enable=false"
     deploy:
@@ -217,7 +217,7 @@ services:
 
 
   websocket:
-    image: frappe/erpnext:v15.9.1
+    image: letajmal/frappe_build:grillax
     deploy:
       restart_policy:
         condition: on-failure
