@@ -8,6 +8,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     volumes:
         - sites:/home/frappe/frappe-bench/sites
         - logs:/home/frappe/frappe-bench/logs
@@ -84,11 +87,15 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
       - --skip-innodb-read-only-compressed
+      - --innodb-buffer-pool-size=4G
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
     volumes:
@@ -130,11 +137,14 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     command:
       - nginx-entrypoint.sh
     environment:
       BACKEND: backend:8000
-      FRAPPE_SITE_NAME_HEADER: ${SITE_NAME}
+      FRAPPE_SITE_NAME_HEADER: $$host
       SOCKETIO: websocket:9000
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
@@ -153,6 +163,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     command:
       - bench
       - worker
@@ -170,6 +183,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     command:
       - bench
       - worker
@@ -187,6 +203,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     volumes:
       - redis-queue-data:/data
 
@@ -198,6 +217,9 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      resources:
+        reservations:
+          memory: 4G
     volumes:
       - redis-cache-data:/data
 
